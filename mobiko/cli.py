@@ -17,6 +17,9 @@ def main():
     parser.add_argument('--optimize', dest='optimize',
                         action='store_const',
                         const=True, default=False)
+    parser.add_argument('--pngquant', dest='pngquant',
+                        action='store_const',
+                        const=True, default=False)
     args = parser.parse_args()
 
     filename = args.file
@@ -25,8 +28,8 @@ def main():
     basename = os.path.basename(filename)
     noextname = basename.split('.')[0]
 
-    image = Image.open(filename)
-
+    image = Image.open(filename).convert('RGBA')
+    
     for t in template:
         size, scale = t
         absize = size * scale
@@ -34,10 +37,11 @@ def main():
                     .format(noextname, size, scale)
                   )
 
-        img = image.resize((int(absize), int(absize)), Image.ANTIALIAS)
-        img.save(outfile)
+        new_size = int(absize), int(absize)
+        img = image.resize(new_size, resample=Image.BICUBIC)
+        img.save(outfile, optimize=args.optimize)
 
-        if args.optimize:
+        if args.pngquant:
             optimize_png(outfile)
 
 
