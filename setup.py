@@ -13,7 +13,7 @@ setup(
   description = 'Make images for iOS app icon from a big PNG',
   long_description = open(join(basepath, 'README.txt')).read(),
   scripts = [join(binpath, 'mobiko')],
-  install_requires=[],
+  install_requires=['pillow'],
   author = 'Gamaliel Espinoza M.',
   author_email = 'gamaliel.espinoza@gmail.com',
   url = 'https://github.com/gamikun/mobiko',
